@@ -19,7 +19,7 @@ function onScanSuccess(decodedText) {
     document.getElementById("productCategory").innerText = product.category;
     document.getElementById("productInfo").classList.remove("d-none");
   } else {
-    alert("Товар не найден");
+    showModal("Ошибка", "Товар не найден", "danger");
   }
 }
 
@@ -54,12 +54,12 @@ function saveInventory() {
   const qty = document.getElementById("quantity").value;
 
   if (!currentProduct) {
-    alert("Сначала отсканируй товар");
+    showModal("Ошибка", "Сначала отсканируй товар", "danger");
     return;
   }
 
   if (!qty || qty <= 0) {
-    alert("Введите количество");
+    showModal("Ошибка", "Введите количество", "warning");
     return;
   }
 
@@ -77,7 +77,7 @@ function saveInventory() {
   renderTable(); // 🔥 ВОТ ЭТО ГЛАВНОЕ
 
   document.getElementById("quantity").value = "";
-  alert("Сохранено");
+  showModal("Готово", "Инвентаризация сохранена", "success");
 }
 
 
@@ -123,21 +123,22 @@ function addProduct() {
   const category = document.getElementById("newCategory").value.trim();
 
   if (!id || !name || !category) {
-    alert("Заполни все поля");
+    showModal("Ошибка", "Заполни все поля", "danger");
     return;
   }
 
   let products = getProducts();
 
   if (products.find(p => p.id === id)) {
-    alert("Товар с таким ID уже существует");
+    showModal("Ошибка", "Товар с таким ID уже существует", "warning");
+
     return;
   }
 
   products.push({ id, name, category });
   saveProducts(products);
 
-  alert("Товар добавлен");
+  showModal("Успех", "Товар добавлен", "success");
 
   document.getElementById("newId").value = "";
   document.getElementById("newName").value = "";
@@ -189,14 +190,14 @@ function editProduct(index) {
 }
 function exportExcel() {
   if (typeof XLSX === "undefined") {
-    alert("Библиотека XLSX не подключена");
+    showModal("Информация", "Библиотека XLSX не подключена", "warning");
     return;
   }
 
   let data = JSON.parse(localStorage.getItem("inventory")) || [];
 
   if (!data.length) {
-    alert("Нет данных для экспорта");
+    showModal("Информация", "Нет данных для экспорта", "secondary");
     return;
   }
 
@@ -258,7 +259,7 @@ function generateQR() {
   const products = getProducts();
   const product = products.find(p => p.id === id);
 
-  if (!product) return alert("Товар не найден");
+  if (!product) return showModal("Ошибка", "Товар не найден", "danger");
 
   // очищаем предыдущий QR
   document.getElementById("qrcode").innerHTML = "";
@@ -274,6 +275,16 @@ function generateQR() {
 // обновляем список при загрузке
 document.addEventListener("DOMContentLoaded", populateProductSelect);
 
+function showModal(title, message, type = "primary") {
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalBody").innerText = message;
+
+  const modalHeader = document.querySelector("#appModal .modal-header");
+  modalHeader.className = "modal-header bg-" + type + " text-white";
+
+  const modal = new bootstrap.Modal(document.getElementById("appModal"));
+  modal.show();
+}
 
 
 renderProducts();
