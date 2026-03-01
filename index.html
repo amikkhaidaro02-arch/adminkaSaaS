@@ -13,6 +13,14 @@
     body { min-height: 100vh; }
     .vh-100 { min-height: 100vh; }
     .section { padding-bottom: 50px; }
+    @media (max-width: 768px) {
+        body {
+            padding-bottom: 70px;
+        }
+        .btn{
+            text-decoration: none;
+        }
+    }
   </style>
 </head>
 <!-- ===== Модалка редактирования товара ===== -->
@@ -64,6 +72,32 @@
     </div>
   </div>
 </div>
+<!-- ===== Нижняя навигация для мобильных ===== -->
+<div class="d-md-none fixed-bottom bg-white border-top shadow-sm">
+  <div class="d-flex justify-content-around text-center py-2">
+
+    <button class="btn btn-link text-dark nav-btn" onclick="showSection('productsSection')">
+      <div>📦</div>
+      <small>Товары</small>
+    </button>
+
+    <button class="btn btn-link text-dark nav-btn" onclick="showSection('inventorySection')">
+      <div>📷</div>
+      <small>Сканер</small>
+    </button>
+
+    <button class="btn btn-link text-dark nav-btn" onclick="showSection('historySection')">
+      <div>📋</div>
+      <small>История</small>
+    </button>
+
+    <button class="btn btn-link text-dark nav-btn" onclick="showSection('generateQrSection')">
+      <div>🖨</div>
+      <small>QR</small>
+    </button>
+
+  </div>
+</div>
 
 <body class="bg-light">
 
@@ -80,12 +114,7 @@
       <button class="btn btn-dark w-100 mb-2" onclick="showSection('generateQrSection')">🖨 Генерация QR</button>
     </div>
 
-    <!-- ===== Кнопка меню для мобильного ===== -->
-    <div class="d-md-none col-12 p-2">
-      <button class="btn btn-dark mb-2 w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
-        ☰ Меню
-      </button>
-    </div>
+    
 
     <!-- ===== Offcanvas меню для мобилок ===== -->
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileMenu">
@@ -199,6 +228,10 @@
           </div>
         </div>
         <div id="qrcode" class="mt-3"></div>
+        <button id="shareWhatsappBtn" class="btn btn-success mt-3 d-none">
+            📲 Поделиться в WhatsApp
+        </button>
+
       </div>
 
     </div>

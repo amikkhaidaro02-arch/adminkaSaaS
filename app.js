@@ -298,23 +298,22 @@ function exportExcel() {
 }
 
 function showSection(sectionId) {
-  const sections = document.querySelectorAll(".section");
-
-  sections.forEach(section => {
-    section.classList.add("d-none");
+  document.querySelectorAll('.section').forEach(sec => {
+    sec.classList.add('d-none');
   });
 
-  document.getElementById(sectionId).classList.remove("d-none");
+  document.getElementById(sectionId).classList.remove('d-none');
 
-  // 🔥 управление камерой
-  if (sectionId === "inventorySection") {
-    setTimeout(() => {
-      startCamera();
-    }, 300);
-  } else {
-    stopCamera();
-  }
+  // подсветка активной кнопки
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.remove('text-primary');
+    btn.classList.add('text-dark');
+  });
+
+  event.currentTarget.classList.remove('text-dark');
+  event.currentTarget.classList.add('text-primary');
 }
+
 
 // Подключение библиотеки QRCode.js (через CDN)
 const script = document.createElement("script");
@@ -339,18 +338,46 @@ function generateQR() {
   const products = getProducts();
   const product = products.find(p => p.id === id);
 
-  if (!product) return showModal("Ошибка", "Товар не найден", "danger");
+  if (!product) {
+    showModal("Ошибка", "Товар не найден", "danger");
+    return;
+  }
 
-  // очищаем предыдущий QR
+  // очищаем старый QR
   document.getElementById("qrcode").innerHTML = "";
 
-  // создаем новый
+  // создаем новый QR
   new QRCode(document.getElementById("qrcode"), {
     text: product.id,
     width: 200,
     height: 200
   });
+
+  // показываем кнопку
+  const btn = document.getElementById("shareWhatsappBtn");
+  btn.classList.remove("d-none");
+
+  // передаём ПРАВИЛЬНЫЙ текст
+  btn.onclick = function () {
+    shareToWhatsApp(product);
+  };
 }
+
+function shareToWhatsApp(product) {
+  const message = encodeURIComponent(
+    `QR код товара:
+    ID: ${product.id}
+    Название: ${product.name}
+    Категория: ${product.category}
+    Склад: ${product.warehouse}
+    Вес: ${product.weight}
+    Размер: ${product.size}`
+      );
+
+      const whatsappUrl = `https://wa.me/?text=${message}`;
+      window.open(whatsappUrl, "_blank");
+}
+
 
 // обновляем список при загрузке
 document.addEventListener("DOMContentLoaded", populateProductSelect);
