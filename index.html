@@ -15,6 +15,56 @@
     .section { padding-bottom: 50px; }
   </style>
 </head>
+<!-- ===== Модалка редактирования товара ===== -->
+<div class="modal fade" id="editProductModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title">Редактирование товара</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="editIndex">
+
+        <div class="row g-2">
+          <div class="col-md-6">
+            <label class="form-label">Название</label>
+            <input type="text" id="editName" class="form-control">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Категория</label>
+            <input type="text" id="editCategory" class="form-control">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Склад</label>
+            <input type="text" id="editWarehouse" class="form-control">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Вес</label>
+            <input type="text" id="editWeight" class="form-control">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Размер</label>
+            <input type="text" id="editSize" class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button class="btn btn-success" onclick="saveEditedProduct()">Сохранить</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <body class="bg-light">
 
 <div class="container-fluid">
@@ -62,10 +112,19 @@
             <input type="text" id="newId" class="form-control" placeholder="ID">
           </div>
           <div class="col-12 col-md">
+            <input type="text" id="newWarehouse" class="form-control" placeholder="Склад">
+          </div>
+          <div class="col-12 col-md">
             <input type="text" id="newName" class="form-control" placeholder="Название">
           </div>
           <div class="col-12 col-md">
             <input type="text" id="newCategory" class="form-control" placeholder="Категория">
+          </div>
+          <div class="col-12 col-md">
+            <input type="text" id="newWeight" class="form-control" placeholder="Вес (кг)">
+          </div>
+          <div class="col-12 col-md">
+            <input type="text" id="newSize" class="form-control" placeholder="Размер (например 30x20x10)">
           </div>
           <div class="col-12 col-md-auto">
             <button class="btn btn-success w-100" onclick="addProduct()">Добавить</button>
@@ -80,6 +139,9 @@
                 <th>ID</th>
                 <th>Название</th>
                 <th>Категория</th>
+                <th>Склад</th>
+                <th>Вес</th>
+                <th>Размер</th>
                 <th>Действия</th>
               </tr>
             </thead>
@@ -111,8 +173,11 @@
               <tr>
                 <th>#</th>
                 <th>Товар</th>
-                <th>Категория</th>
+                <th>Описание</th>
                 <th>Количество</th>
+                <th>Склад</th>
+                <th>Вес</th>
+                <th>Размер</th>
                 <th>Дата</th>
                 <th>Удалить</th>
               </tr>
@@ -164,5 +229,29 @@
 </div>
 
 <script src="app.js"></script>
+<!-- ===== Модалка подтверждения удаления ===== -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Подтверждение удаления</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <p id="deleteMessage"></p>
+        <input type="hidden" id="deleteIndex">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Удалить</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
